@@ -1,0 +1,15 @@
+{
+  "name": "Mein ruhiger Freund",
+  "short_name": "Ruhiger Freund",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f0eafa",
+  "theme_color": "#4a3f6b",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
