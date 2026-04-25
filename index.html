@@ -2,34 +2,128 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Notanker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notanker App</title>
     <style>
-        /* Das Design für die Buttons: Groß und freundlich */
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f4f8; /* Ein beruhigendes Hellblau/Grau */
-            font-family: sans-serif;
+        :root {
+            --bg-color: #f0f7f4;
+            --btn-blue: #a3c4bc;
+            --btn-green: #b9d6c8;
+            --btn-orange: #f2cc8f;
+            --text-color: #3d5a80;
         }
 
-        .anker-button {
-            flex: 1; /* Nimmt den ganzen Platz ein */
-            margin: 10px;
-            font-size: 3rem; /* Sehr große Schrift */
-            border-radius: 30px; /* Abgerundete Ecken wirken weicher */
-            border: none;
-            background-color: #ffffff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* Hauptmenü */
+        #main-screen {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            height: 90%;
+            gap: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            border: none;
+            border-radius: 40px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            transition: transform 0.1s, background-color 0.3s;
+        }
+
+        .btn:active { transform: scale(0.95); }
+        .pause { background-color: var(--btn-blue); }
+        .stopp { background-color: #e07a5f; }
+        .hilfe { background-color: var(--btn-orange); }
+
+        /* Ruhe-Modus */
+        #calm-screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background-color: #3d5a80;
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .circle {
+            width: 200px;
+            height: 200px;
+            background: #e0fbfc;
+            border-radius: 50%;
+            animation: breathe 4s infinite alternate;
+        }
+
+        @keyframes breathe {
+            from { transform: scale(0.8); opacity: 0.7; }
+            to { transform: scale(1.2); opacity: 1; }
+        }
+
+        .hidden { display: none !important; }
+        #calm-screen.active { display: flex !important; }
     </style>
 </head>
 <body>
 
-    <button class="anker-button">PAUSE</button>
-    <button class="anker-button">STOPP</button>
-    <button class="anker-button">HILFE</button>
+    <div id="main-screen">
+        <button class="btn pause" onclick="triggerAction('PAUSE')">PAUSE</button>
+        <button class="btn stopp" onclick="triggerAction('STOPP')">STOPP</button>
+        <button class="btn hilfe" onclick="triggerAction('HILFE')">HILFE</button>
+    </div>
 
+    <div id="calm-screen">
+        <div class="circle"></div>
+        <h1 id="action-text">...</h1>
+        <button onclick="resetApp()" style="margin-top: 50px; padding: 20px; border-radius: 20px; border:none;">Zurück</button>
+    </div>
+
+    <script>
+        // Web Audio API für sanftes Feedback
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playTone() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1);
+        }
+
+        function triggerAction(action) {
+            playTone();
+            document.getElementById('main-screen').style.display = 'none';
+            document.getElementById('calm-screen').classList.add('active');
+            document.getElementById('action-text').innerText = action;
+        }
+
+        function resetApp() {
+            document.getElementById('calm-screen').classList.remove('active');
+            document.getElementById('main-screen').style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
