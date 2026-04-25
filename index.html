@@ -1,129 +1,1302 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Notanker App</title>
-    <style>
-        :root {
-            --bg-color: #f0f7f4;
-            --btn-blue: #a3c4bc;
-            --btn-green: #b9d6c8;
-            --btn-orange: #f2cc8f;
-            --text-color: #3d5a80;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Mein ruhiger Freund 🐻</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap');
+:root {
+  --text-dark:#4a3f6b; --text-medium:#7a6f9a; --text-light:#a09ab8;
+  --calm-bg:#f0eafa; --white:#ffffff;
+  --shadow-soft:0 8px 32px rgba(100,80,160,.10);
+  --shadow-medium:0 12px 40px rgba(100,80,160,.18);
+  --r-big:32px; --r-med:20px; --r-sm:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;min-height:100vh;font-family:'Nunito',sans-serif;background:var(--calm-bg);color:var(--text-dark);overflow-x:hidden;}
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-color);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+/* SCREENS */
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;padding:24px 16px 40px;animation:fadeIn .4s ease;}
+.screen.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-        /* Hauptmenü */
-        #main-screen {
-            display: flex;
-            flex-direction: column;
-            width: 90%;
-            height: 90%;
-            gap: 20px;
-        }
+/* TOPBAR */
+.topbar{width:100%;max-width:480px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.back-btn{width:48px;height:48px;background:var(–white);border:none;border-radius:50%;box-shadow:var(–shadow-soft);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+.back-btn:active{transform:scale(.88);}
+.screen-title{font-family:‘Baloo 2’,cursive;font-size:20px;font-weight:700;color:var(–text-dark);}
+.spacer{width:48px;}
 
-        .btn {
-            flex: 1;
-            border: none;
-            border-radius: 40px;
-            font-size: 3rem;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-            transition: transform 0.1s, background-color 0.3s;
-        }
+/* HOME */
+#home{background:linear-gradient(160deg,#e8dff5 0%,#d6eaf8 50%,#d4f0e8 100%);}
+.bear-hero{width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;margin:10px 0 24px;}
+.bear-wrap{position:relative;width:160px;height:160px;margin-bottom:12px;}
+.bear-svg{width:160px;height:160px;filter:drop-shadow(0 8px 24px rgba(160,113,74,.25));animation:bearFloat 3s ease-in-out infinite;}
+@keyframes bearFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+.bear-bubble{position:absolute;top:-12px;right:-20px;background:var(–white);border-radius:20px 20px 20px 4px;padding:8px 12px;font-size:13px;font-weight:700;color:var(–text-dark);box-shadow:var(–shadow-soft);white-space:nowrap;animation:bubblePop .5s .8s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes bubblePop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.home-greeting{font-family:‘Baloo 2’,cursive;font-size:28px;font-weight:800;color:var(–text-dark);text-align:center;line-height:1.2;margin-bottom:6px;}
+.home-sub{font-size:15px;color:var(–text-medium);text-align:center;}
 
-        .btn:active { transform: scale(0.95); }
-        .pause { background-color: var(--btn-blue); }
-        .stopp { background-color: #e07a5f; }
-        .hilfe { background-color: var(--btn-orange); }
+/* MOOD */
+.mood-row{width:100%;max-width:480px;background:var(–white);border-radius:var(–r-big);padding:20px 16px;box-shadow:var(–shadow-soft);margin-bottom:20px;}
+.mood-label{font-size:14px;font-weight:700;color:var(–text-medium);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;text-align:center;}
+.mood-buttons{display:flex;justify-content:space-around;gap:8px;}
+.mood-btn{flex:1;aspect-ratio:1;max-width:72px;background:none;border:3px solid transparent;border-radius:var(–r-med);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform .15s,border-color .2s,background .2s;padding:8px 4px;}
+.mood-btn .emoji{font-size:28px;line-height:1;}
+.mood-btn .mname{font-size:10px;font-weight:700;color:var(–text-medium);}
+.mood-btn:active{transform:scale(.88);}
+.mood-btn[data-mood=“happy”]{background:#fffde7;}
+.mood-btn[data-mood=“calm”]{background:#e8f5e9;}
+.mood-btn[data-mood=“tired”]{background:#e3f2fd;}
+.mood-btn[data-mood=“worried”]{background:#fff3e0;}
+.mood-btn[data-mood=“overwhelmed”]{background:#fce4ec;}
+.mood-btn.selected{border-color:#7e57c2;box-shadow:0 0 0 3px rgba(126,87,194,.15);}
 
-        /* Ruhe-Modus */
-        #calm-screen {
-            display: none;
-            width: 100%;
-            height: 100%;
-            background-color: #3d5a80;
-            color: white;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+/* ACTION GRID */
+.action-grid{width:100%;max-width:480px;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.action-card{border:none;border-radius:var(–r-big);padding:22px 16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;box-shadow:var(–shadow-soft);transition:transform .15s;text-decoration:none;}
+.action-card:active{transform:scale(.92);}
+.action-icon{font-size:40px;line-height:1;}
+.action-name{font-family:‘Baloo 2’,cursive;font-size:15px;font-weight:700;color:var(–text-dark);text-align:center;line-height:1.2;}
+.card-sos{background:linear-gradient(135deg,#fce4ec,#fdb8cc);grid-column:1/-1;animation:sosPulse 2s ease-in-out infinite;}
+@keyframes sosPulse{0%,100%{box-shadow:0 8px 32px rgba(236,64,122,.15)}50%{box-shadow:0 8px 48px rgba(236,64,122,.35),0 0 0 8px rgba(236,64,122,.08)}}
+.card-calm{background:linear-gradient(135deg,#e8dff5,#d4c8f0);}
+.card-breathe{background:linear-gradient(135deg,#d4f0e8,#b8e4d8);}
+.card-sounds{background:linear-gradient(135deg,#d6eaf8,#b8d8f0);}
+.card-schedule{background:linear-gradient(135deg,#fef9c3,#fde988);}
+.card-parent{background:linear-gradient(135deg,#e0f7fa,#b2ebf2);grid-column:1/-1;}
+.card-universe{background:linear-gradient(135deg,#1a0a2e,#4a1a8e);}
+.card-universe .action-name{color:#e0ccff;}
+.card-flicker{background:linear-gradient(135deg,#fff9c4,#ffe082);}
+.card-sos{background:linear-gradient(135deg,#fce4ec,#fdb8cc);grid-column:1/-1;animation:sosPulse 2s ease-in-out infinite;}
+@keyframes sosPulse{0%,100%{box-shadow:0 8px 32px rgba(236,64,122,.15)}50%{box-shadow:0 8px 48px rgba(236,64,122,.35),0 0 0 8px rgba(236,64,122,.08)}}
 
-        .circle {
-            width: 200px;
-            height: 200px;
-            background: #e0fbfc;
-            border-radius: 50%;
-            animation: breathe 4s infinite alternate;
-        }
+/* FLICKER SCREEN */
+#flicker{justify-content:center;align-items:center;position:relative;overflow:hidden;padding:0;min-height:100vh;}
+.flicker-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;padding:24px;}
+.flicker-title{font-family:‘Baloo 2’,cursive;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.flicker-sub{font-size:15px;color:rgba(255,255,255,.8);}
+.flicker-speed-row{display:flex;gap:10px;}
+.flicker-speed-btn{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);color:white;padding:10px 20px;border-radius:50px;font-family:‘Baloo 2’,cursive;font-size:15px;font-weight:700;cursor:pointer;transition:transform .12s,background .2s;}
+.flicker-speed-btn:active{transform:scale(.9);}
+.flicker-speed-btn.active{background:rgba(255,255,255,.4);}
+.flicker-exit{background:rgba(0,0,0,.3);border:2px solid rgba(255,255,255,.4);color:white;padding:14px 32px;border-radius:50px;font-family:‘Baloo 2’,cursive;font-size:18px;font-weight:700;cursor:pointer;}
 
-        @keyframes breathe {
-            from { transform: scale(0.8); opacity: 0.7; }
-            to { transform: scale(1.2); opacity: 1; }
-        }
+/* SOS */
+#sos{background:linear-gradient(160deg,#1a0a2e 0%,#2d1057 50%,#1a0a2e 100%);position:relative;overflow:hidden;}
+#sos .screen-title{color:#e8d0ff;}
+#sos .back-btn{background:rgba(255,255,255,.15);color:white;}
+.sos-header{width:100%;max-width:480px;text-align:center;margin-bottom:24px;position:relative;z-index:2;}
+.sos-big-text{font-family:‘Baloo 2’,cursive;font-size:32px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px;}
+.sos-sub{font-size:16px;color:#c8a8f0;}
+.sos-bear-wrap{width:120px;height:120px;margin:0 auto 20px;}
+.sos-tools{width:100%;max-width:480px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;position:relative;z-index:2;}
+.sos-tool{background:rgba(255,255,255,.10);border:2px solid rgba(255,255,255,.15);border-radius:var(–r-big);padding:20px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .15s,background .2s;color:white;}
+.sos-tool:active{transform:scale(.88);background:rgba(255,255,255,.22);}
+.sos-tool .t-icon{font-size:36px;}
+.sos-tool .t-name{font-size:13px;font-weight:700;text-align:center;color:#e0ccff;}
+.stars-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.star{position:absolute;width:3px;height:3px;background:white;border-radius:50%;animation:twinkle var(–d) ease-in-out infinite var(–delay);}
+@keyframes twinkle{0%,100%{opacity:.1;transform:scale(.8)}50%{opacity:.7;transform:scale(1.3)}}
 
-        .hidden { display: none !important; }
-        #calm-screen.active { display: flex !important; }
-    </style>
+/* CALM ZONE */
+#calm{background:linear-gradient(160deg,#e8dff5 0%,#d4f0e8 100%);}
+.calm-grid{width:100%;max-width:480px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.calm-card{background:var(–white);border-radius:var(–r-big);padding:24px 16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:var(–shadow-soft);transition:transform .15s;border:none;}
+.calm-card:active{transform:scale(.91);}
+.calm-card .c-icon{font-size:44px;}
+.calm-card .c-name{font-family:‘Baloo 2’,cursive;font-size:15px;font-weight:700;color:var(–text-dark);text-align:center;}
+
+/* BREATHE */
+#breathe{background:linear-gradient(160deg,#d4f0e8 0%,#b8dff0 100%);justify-content:center;}
+#sosbreathe{background:linear-gradient(160deg,#1a0a2e 0%,#2d1057 100%);justify-content:center;}
+#sosbreathe .back-btn{background:rgba(255,255,255,.15);color:white;}
+#sosbreathe .screen-title{color:#e8d0ff;}
+.breathe-center{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;}
+.breathe-circle{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(180,230,210,.6) 100%);box-shadow:0 0 0 20px rgba(180,230,210,.3);display:flex;align-items:center;justify-content:center;transition:transform .8s ease;cursor:pointer;}
+.sos-breathe-circle{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(200,160,255,.3) 0%,rgba(100,50,200,.2) 100%);box-shadow:0 0 0 20px rgba(150,100,255,.1);display:flex;align-items:center;justify-content:center;transition:transform .8s ease;}
+.breathe-inner,.sos-breathe-inner{font-size:64px;}
+.breathe-status{font-family:‘Baloo 2’,cursive;font-size:26px;font-weight:800;color:#2d7a5f;}
+.sos-breathe-text{font-family:‘Baloo 2’,cursive;font-size:28px;font-weight:800;color:#e0ccff;}
+.breathe-instruction{font-size:16px;color:#4a9a78;max-width:260px;line-height:1.5;}
+.sos-breathe-sub{font-size:16px;color:#b090e0;}
+.breathe-count,.sos-breathe-count{font-size:48px;font-weight:900;color:#2d7a5f;min-height:60px;}
+.sos-breathe-count{color:#e0ccff;}
+.breathe-start-btn{background:linear-gradient(135deg,#66bb6a,#43a047);color:white;border:none;padding:16px 40px;border-radius:50px;font-family:‘Baloo 2’,cursive;font-size:20px;font-weight:700;cursor:pointer;box-shadow:var(–shadow-soft);transition:transform .15s;}
+.breathe-start-btn:active{transform:scale(.95);}
+
+/* SOUNDS */
+#sounds{background:linear-gradient(160deg,#d6eaf8 0%,#dde8f8 100%);}
+.sounds-grid{width:100%;max-width:480px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sound-card{background:var(–white);border-radius:var(–r-big);padding:22px 14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(–shadow-soft);transition:transform .15s,background .2s;border:3px solid transparent;}
+.sound-card.playing{border-color:#42a5f5;background:#e3f2fd;}
+.sound-card:active{transform:scale(.92);}
+.sound-icon{font-size:40px;}
+.sound-name{font-family:‘Baloo 2’,cursive;font-size:14px;font-weight:700;color:var(–text-dark);}
+.sound-bar{display:flex;gap:3px;align-items:flex-end;height:20px;opacity:0;transition:opacity .3s;}
+.sound-card.playing .sound-bar{opacity:1;}
+.sound-bar span{width:4px;background:#42a5f5;border-radius:2px;animation:soundBar var(–d) ease-in-out infinite;}
+@keyframes soundBar{0%,100%{height:6px}50%{height:18px}}
+.vol-row{width:100%;max-width:480px;background:var(–white);border-radius:var(–r-med);padding:16px 20px;box-shadow:var(–shadow-soft);display:flex;align-items:center;gap:12px;margin-top:14px;}
+.vol-icon{font-size:22px;}
+.vol-slider{flex:1;-webkit-appearance:none;height:8px;background:#d6eaf8;border-radius:4px;outline:none;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;background:#42a5f5;border-radius:50%;cursor:pointer;box-shadow:0 2px 8px rgba(66,165,245,.4);}
+
+/* BUBBLES — no CSS animation, pure JS so pop always works */
+#bubbles{background:linear-gradient(160deg,#fce4ec 0%,#e8dff5 100%);position:relative;overflow:hidden;}
+.bubbles-area{width:100%;max-width:480px;flex:1;position:relative;min-height:440px;}
+.bubble{position:absolute;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:inset -4px -4px 12px rgba(255,255,255,.6),0 4px 16px rgba(0,0,0,.08);user-select:none;-webkit-user-select:none;}
+.pop-count{width:100%;max-width:480px;text-align:center;font-family:‘Baloo 2’,cursive;font-size:24px;font-weight:800;color:var(–text-dark);margin-top:8px;}
+
+/* SCHEDULE */
+#schedule{background:linear-gradient(160deg,#fffde7 0%,#f3e5f5 100%);}
+.schedule-list{width:100%;max-width:480px;display:flex;flex-direction:column;gap:10px;}
+.schedule-item{background:var(–white);border-radius:var(–r-med);padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(–shadow-soft);cursor:pointer;transition:transform .15s,opacity .2s;border-left:6px solid #e0e0e0;}
+.schedule-item.done{opacity:.5;border-left-color:#66bb6a;}
+.schedule-item.current{border-left-color:#7e57c2;background:#f3e5f5;}
+.schedule-item:active{transform:scale(.97);}
+.s-icon{font-size:32px;min-width:40px;text-align:center;}
+.s-text{flex:1;}
+.s-name{font-family:‘Baloo 2’,cursive;font-size:17px;font-weight:700;color:var(–text-dark);}
+.s-time{font-size:13px;color:var(–text-medium);}
+.s-check{font-size:24px;}
+.add-schedule-btn{width:100%;max-width:480px;background:linear-gradient(135deg,#e8dff5,#d4c8f0);border:none;border-radius:var(–r-med);padding:16px;cursor:pointer;font-family:‘Baloo 2’,cursive;font-size:17px;font-weight:700;color:var(–text-dark);box-shadow:var(–shadow-soft);transition:transform .15s;margin-top:4px;}
+.add-schedule-btn:active{transform:scale(.97);}
+
+/* PRESSURE */
+#pressure{background:linear-gradient(160deg,#fce4ec 0%,#e8dff5 100%);justify-content:center;}
+.pressure-area{width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.pressure-title{font-family:‘Baloo 2’,cursive;font-size:22px;font-weight:800;color:var(–text-dark);text-align:center;}
+.pressure-sub{font-size:15px;color:var(–text-medium);text-align:center;}
+.pressure-btn{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f8b4cc,#e8709a);border:none;cursor:pointer;box-shadow:0 8px 32px rgba(232,112,154,.35);transition:transform .08s,box-shadow .1s;display:flex;align-items:center;justify-content:center;font-size:60px;}
+.pressure-btn:active{transform:scale(.86);box-shadow:0 4px 16px rgba(232,112,154,.4);}
+.press-count{font-family:‘Baloo 2’,cursive;font-size:28px;font-weight:800;color:var(–text-dark);}
+.press-msg{font-size:16px;color:var(–text-medium);text-align:center;min-height:28px;}
+
+/* DARK MODE */
+#darkmode{background:#000;justify-content:center;align-items:center;}
+.dark-content{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;}
+.dark-bear{font-size:80px;animation:bearFloat 3s ease-in-out infinite;}
+.dark-text{font-family:‘Baloo 2’,cursive;font-size:24px;font-weight:800;color:#e0ccff;}
+.dark-sub{font-size:15px;color:#8070a0;}
+.dark-exit{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);color:#c0a8e0;padding:14px 32px;border-radius:50px;font-family:‘Baloo 2’,cursive;font-size:18px;font-weight:700;cursor:pointer;transition:transform .15s;}
+.dark-exit:active{transform:scale(.95);}
+
+/* UNIVERSE — canvas fills entire screen div */
+#universe{background:#000008;justify-content:center;align-items:center;position:relative;overflow:hidden;min-height:100vh;}
+#universeCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;display:block;}
+.universe-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;padding:24px;}
+.universe-title{font-family:‘Baloo 2’,cursive;font-size:28px;font-weight:800;color:#fff;text-shadow:0 0 20px rgba(180,140,255,.8);}
+.universe-sub{font-size:15px;color:#9070c0;}
+.universe-exit{background:rgba(255,255,255,.10);border:2px solid rgba(255,255,255,.25);color:#d0b0ff;padding:14px 32px;border-radius:50px;font-family:‘Baloo 2’,cursive;font-size:18px;font-weight:700;cursor:pointer;transition:transform .15s;}
+.universe-exit:active{transform:scale(.95);}
+
+/* PARENT */
+#parent{background:linear-gradient(160deg,#e0f7fa 0%,#e8eaf6 100%);}
+.parent-lock{width:100%;max-width:480px;background:var(–white);border-radius:var(–r-big);padding:32px 24px;box-shadow:var(–shadow-medium);text-align:center;margin-bottom:20px;}
+.lock-icon{font-size:56px;margin-bottom:16px;}
+.lock-title{font-family:‘Baloo 2’,cursive;font-size:22px;font-weight:800;color:var(–text-dark);margin-bottom:8px;}
+.lock-sub{font-size:14px;color:var(–text-medium);margin-bottom:20px;}
+.pin-dots{display:flex;gap:12px;justify-content:center;margin-bottom:20px;}
+.pin-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(–text-light);background:transparent;transition:background .2s;}
+.pin-dot.filled{background:var(–text-dark);border-color:var(–text-dark);}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:240px;margin:0 auto;}
+.pin-key{background:var(–calm-bg);border:none;border-radius:var(–r-sm);padding:16px;font-size:22px;font-weight:700;color:var(–text-dark);cursor:pointer;transition:transform .12s,background .15s;font-family:‘Nunito’,sans-serif;}
+.pin-key:active{transform:scale(.85);background:#d8ccf0;}
+.parent-content{display:none;width:100%;max-width:480px;}
+.parent-content.unlocked{display:flex;flex-direction:column;gap:14px;}
+.parent-card{background:var(–white);border-radius:var(–r-big);padding:20px;box-shadow:var(–shadow-soft);}
+.pc-title{font-family:‘Baloo 2’,cursive;font-size:17px;font-weight:800;color:var(–text-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.mood-log{display:flex;flex-direction:column;gap:8px;}
+.mood-log-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(–calm-bg);border-radius:var(–r-sm);}
+.ml-emoji{font-size:22px;}
+.ml-text{flex:1;font-size:14px;color:var(–text-medium);}
+.ml-time{font-size:12px;color:var(–text-light);}
+.calm-btn-parent{background:linear-gradient(135deg,#d4f0e8,#a8dfc8);border:none;border-radius:var(–r-med);padding:18px;cursor:pointer;width:100%;font-family:‘Baloo 2’,cursive;font-size:18px;font-weight:700;color:#2d7a5f;box-shadow:var(–shadow-soft);transition:transform .15s;}
+.calm-btn-parent:active{transform:scale(.96);}
+.breathe-parent{background:linear-gradient(135deg,#e8dff5,#d0c4f0);border:none;border-radius:var(–r-med);padding:18px;cursor:pointer;width:100%;font-family:‘Baloo 2’,cursive;font-size:18px;font-weight:700;color:#5e35b1;box-shadow:var(–shadow-soft);transition:transform .15s;margin-top:10px;}
+.breathe-parent:active{transform:scale(.96);}
+.settings-row{display:flex;flex-direction:column;gap:10px;}
+.setting-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0eaf8;}
+.setting-item:last-child{border-bottom:none;}
+.setting-label{font-size:15px;font-weight:600;color:var(–text-dark);}
+.toggle{width:50px;height:28px;background:#d0c8e8;border-radius:14px;position:relative;cursor:pointer;transition:background .2s;border:none;}
+.toggle.on{background:#7e57c2;}
+.toggle::after{content:’’;position:absolute;width:22px;height:22px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .2s;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+.toggle.on::after{transform:translateX(22px);}
+
+/* NOTIFY SETUP */
+.notify-setup{display:flex;flex-direction:column;gap:10px;}
+.notify-input-row{display:flex;gap:8px;align-items:center;}
+.notify-input{flex:1;padding:12px 16px;border:2px solid #e0d8f8;border-radius:var(–r-sm);font-family:‘Nunito’,sans-serif;font-size:15px;color:var(–text-dark);outline:none;background:var(–calm-bg);}
+.notify-input:focus{border-color:#7e57c2;}
+.notify-save-btn{background:#7e57c2;color:white;border:none;border-radius:var(–r-sm);padding:12px 16px;font-family:‘Baloo 2’,cursive;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.notify-save-btn:active{transform:scale(.95);}
+.notify-test-btn{background:linear-gradient(135deg,#fce4ec,#f48fb1);border:none;border-radius:var(–r-sm);padding:14px;cursor:pointer;font-family:‘Baloo 2’,cursive;font-size:16px;font-weight:700;color:#8b1a3a;width:100%;}
+.notify-test-btn:active{transform:scale(.96);}
+.notify-hint{font-size:12px;color:var(–text-light);line-height:1.5;}
+
+/* TIPS */
+.tip-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.tip-tab{padding:6px 14px;border-radius:50px;border:none;font-family:‘Nunito’,sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:transform .12s,background .2s;background:var(–calm-bg);color:var(–text-medium);}
+.tip-tab.active{background:#7e57c2;color:white;}
+.tip-tab:active{transform:scale(.92);}
+.tip-list{display:flex;flex-direction:column;gap:10px;}
+.tip-item{border-radius:var(–r-sm);padding:14px 16px;font-size:13px;line-height:1.6;border-left:4px solid #ccc;}
+.tip-item b{display:block;font-size:14px;margin-bottom:4px;}
+.tip-item.meltdown{background:linear-gradient(135deg,#fce4ec,#ffd6e0);color:#8b1a3a;border-left-color:#e91e63;}
+.tip-item.sensory{background:linear-gradient(135deg,#e8f5e9,#d4edda);color:#1a5c2a;border-left-color:#43a047;}
+.tip-item.transition{background:linear-gradient(135deg,#e3f2fd,#cce5ff);color:#0d4f8a;border-left-color:#1976d2;}
+.tip-item.aftercare{background:linear-gradient(135deg,#f3e5f5,#ede0f7);color:#5c1a7a;border-left-color:#8e24aa;}
+.tip-item.selfcare{background:linear-gradient(135deg,#e0f7fa,#ccf2f4);color:#00515a;border-left-color:#0097a7;}
+
+/* PARENT CALM */
+#parentcalm{background:linear-gradient(160deg,#e8eaf6 0%,#e0f7fa 100%);justify-content:center;}
+.parentcalm-inner{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;max-width:380px;}
+.parentcalm-title{font-family:‘Baloo 2’,cursive;font-size:26px;font-weight:800;color:var(–text-dark);}
+.parentcalm-sub{font-size:15px;color:var(–text-medium);line-height:1.6;}
+.reminder-box{background:var(–white);border-radius:var(–r-big);padding:24px;box-shadow:var(–shadow-soft);font-size:18px;color:var(–text-dark);line-height:1.8;font-weight:600;}
+.reminder-box span{display:block;}
+.self-tip{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:var(–r-med);padding:16px;font-size:14px;color:#2d6a4f;line-height:1.6;}
+.self-tip-title{font-weight:800;margin-bottom:6px;font-size:15px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:#4a3f6b;color:white;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:700;opacity:0;transition:opacity .3s,transform .3s;z-index:9999;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+
 </head>
 <body>
 
-    <div id="main-screen">
-        <button class="btn pause" onclick="triggerAction('PAUSE')">PAUSE</button>
-        <button class="btn stopp" onclick="triggerAction('STOPP')">STOPP</button>
-        <button class="btn hilfe" onclick="triggerAction('HILFE')">HILFE</button>
+<!-- HOME -->
+
+<div id="home" class="screen active">
+  <div class="bear-hero">
+    <div class="bear-wrap">
+      <svg class="bear-svg" viewBox="0 0 160 160" fill="none">
+        <circle cx="36" cy="42" r="22" fill="#c8956c"/><circle cx="124" cy="42" r="22" fill="#c8956c"/>
+        <circle cx="36" cy="42" r="13" fill="#f0c8a0"/><circle cx="124" cy="42" r="13" fill="#f0c8a0"/>
+        <ellipse cx="80" cy="108" rx="46" ry="40" fill="#c8956c"/>
+        <ellipse cx="80" cy="112" rx="28" ry="24" fill="#f0c8a0"/>
+        <circle cx="80" cy="72" r="44" fill="#c8956c"/>
+        <ellipse cx="80" cy="84" rx="20" ry="14" fill="#f0c8a0"/>
+        <circle cx="64" cy="64" r="7" fill="white"/><circle cx="96" cy="64" r="7" fill="white"/>
+        <circle cx="65.5" cy="63" r="4" fill="#3d2b1f"/><circle cx="97.5" cy="63" r="4" fill="#3d2b1f"/>
+        <circle cx="67" cy="61" r="1.5" fill="white"/><circle cx="99" cy="61" r="1.5" fill="white"/>
+        <ellipse cx="80" cy="79" rx="7" ry="5" fill="#a0714a"/>
+        <path d="M72 87 Q80 94 88 87" stroke="#a0714a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="38" cy="106" rx="14" ry="22" fill="#c8956c" transform="rotate(-15 38 106)"/>
+        <ellipse cx="122" cy="106" rx="14" ry="22" fill="#c8956c" transform="rotate(15 122 106)"/>
+        <ellipse cx="32" cy="124" rx="12" ry="8" fill="#b07848"/><ellipse cx="128" cy="124" rx="12" ry="8" fill="#b07848"/>
+      </svg>
+      <div class="bear-bubble">Ich bin da! 🌟</div>
     </div>
-
-    <div id="calm-screen">
-        <div class="circle"></div>
-        <h1 id="action-text">...</h1>
-        <button onclick="resetApp()" style="margin-top: 50px; padding: 20px; border-radius: 20px; border:none;">Zurück</button>
+    <div class="home-greeting">Hallo, mein Freund!</div>
+    <div class="home-sub">Wie geht es dir heute?</div>
+  </div>
+  <div class="mood-row">
+    <div class="mood-label">Wie fühlst du dich?</div>
+    <div class="mood-buttons">
+      <button class="mood-btn" data-mood="happy" onclick="selectMood(this,'😄','Toll')"><span class="emoji">😄</span><span class="mname">Toll</span></button>
+      <button class="mood-btn" data-mood="calm" onclick="selectMood(this,'😌','Ruhig')"><span class="emoji">😌</span><span class="mname">Ruhig</span></button>
+      <button class="mood-btn" data-mood="tired" onclick="selectMood(this,'😴','Müde')"><span class="emoji">😴</span><span class="mname">Müde</span></button>
+      <button class="mood-btn" data-mood="worried" onclick="selectMood(this,'😟','Sorge')"><span class="emoji">😟</span><span class="mname">Sorge</span></button>
+      <button class="mood-btn" data-mood="overwhelmed" onclick="selectMood(this,'😤','Viel')"><span class="emoji">😤</span><span class="mname">Viel</span></button>
     </div>
+  </div>
+  <div class="action-grid">
+    <button class="action-card card-calm" onclick="goTo('calm')"><span class="action-icon">🌸</span><span class="action-name">Ruhige Zone</span></button>
+    <button class="action-card card-breathe" onclick="goTo('breathe')"><span class="action-icon">🌬️</span><span class="action-name">Atmen mit Bär</span></button>
+    <button class="action-card card-sounds" onclick="goTo('sounds')"><span class="action-icon">🎵</span><span class="action-name">Beruhigende Klänge</span></button>
+    <button class="action-card card-schedule" onclick="goTo('schedule')"><span class="action-icon">📅</span><span class="action-name">Mein Tagesplan</span></button>
+    <button class="action-card card-universe" onclick="goTo('universe')"><span class="action-icon">🌌</span><span class="action-name">Universum</span></button>
+    <button class="action-card card-flicker" onclick="goTo('flicker')"><span class="action-icon">💡</span><span class="action-name">Licht & Farben</span></button>
+    <button class="action-card card-parent" onclick="goTo('parent')"><span class="action-icon">👨‍👩‍👦</span><span class="action-name">Für Mama &amp; Papa</span></button>
+    <button class="action-card card-sos" onclick="goTo('sos')"><span class="action-icon">🆘</span><span class="action-name">Hilfe! Es ist zu viel</span></button>
+  </div>
+</div>
 
-    <script>
-        // Web Audio API für sanftes Feedback
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playTone() {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 1);
-        }
+<!-- FLICKER -->
 
-        function triggerAction(action) {
-            playTone();
-            document.getElementById('main-screen').style.display = 'none';
-            document.getElementById('calm-screen').classList.add('active');
-            document.getElementById('action-text').innerText = action;
-        }
+<div id="flicker" class="screen">
+  <div class="flicker-content">
+    <div style="font-size:60px;">💡</div>
+    <div class="flicker-title">Licht &amp; Farben</div>
+    <div class="flicker-sub">Schau auf die bunten Farben</div>
+    <div class="flicker-speed-row">
+      <button class="flicker-speed-btn active" id="fspeed-slow" onclick="setFlickerSpeed('slow')">Langsam</button>
+      <button class="flicker-speed-btn" id="fspeed-mid" onclick="setFlickerSpeed('mid')">Mittel</button>
+      <button class="flicker-speed-btn" id="fspeed-fast" onclick="setFlickerSpeed('fast')">Schnell</button>
+    </div>
+    <button class="flicker-exit" onclick="goTo('home')">Zurück 🌟</button>
+  </div>
+</div>
 
-        function resetApp() {
-            document.getElementById('calm-screen').classList.remove('active');
-            document.getElementById('main-screen').style.display = 'flex';
-        }
-    </script>
+<!-- SOS -->
+
+<div id="sos" class="screen">
+  <div class="stars-bg" id="starsBg"></div>
+  <div class="topbar" style="position:relative;z-index:2;">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <span class="screen-title">Ich helfe dir 💜</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="sos-header">
+    <div class="sos-bear-wrap">
+      <svg viewBox="0 0 160 160" fill="none" width="120" height="120">
+        <circle cx="36" cy="42" r="22" fill="#9c6b8c"/><circle cx="124" cy="42" r="22" fill="#9c6b8c"/>
+        <circle cx="36" cy="42" r="13" fill="#e0a8c8"/><circle cx="124" cy="42" r="13" fill="#e0a8c8"/>
+        <ellipse cx="80" cy="108" rx="46" ry="40" fill="#9c6b8c"/>
+        <ellipse cx="80" cy="112" rx="28" ry="24" fill="#e0a8c8"/>
+        <circle cx="80" cy="72" r="44" fill="#9c6b8c"/>
+        <ellipse cx="80" cy="84" rx="20" ry="14" fill="#e0a8c8"/>
+        <circle cx="64" cy="64" r="7" fill="white"/><circle cx="96" cy="64" r="7" fill="white"/>
+        <circle cx="65.5" cy="63" r="4" fill="#3d2b1f"/><circle cx="97.5" cy="63" r="4" fill="#3d2b1f"/>
+        <ellipse cx="80" cy="79" rx="7" ry="5" fill="#7a4060"/>
+        <path d="M72 87 Q80 93 88 87" stroke="#7a4060" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="30" cy="100" rx="14" ry="24" fill="#9c6b8c" transform="rotate(-30 30 100)"/>
+        <ellipse cx="130" cy="100" rx="14" ry="24" fill="#9c6b8c" transform="rotate(30 130 100)"/>
+      </svg>
+    </div>
+    <div class="sos-big-text">Ich bin bei dir. 🤗</div>
+    <div class="sos-sub">Du bist sicher. Wähle was hilft:</div>
+  </div>
+  <div class="sos-tools">
+    <button class="sos-tool" onclick="goTo('sosbreathe')"><span class="t-icon">🌬️</span><span class="t-name">Zusammen atmen</span></button>
+    <button class="sos-tool" onclick="goTo('darkmode')"><span class="t-icon">🌑</span><span class="t-name">Alles dunkel machen</span></button>
+    <button class="sos-tool" onclick="goTo('pressure')"><span class="t-icon">💆</span><span class="t-name">Drücken &amp; tippen</span></button>
+    <button class="sos-tool" onclick="goTo('bubbles')"><span class="t-icon">🫧</span><span class="t-name">Blasen kaputt machen</span></button>
+    <button class="sos-tool" onclick="playSOSSound()"><span class="t-icon">🎵</span><span class="t-name">Beruhigungs­musik</span></button>
+    <button class="sos-tool" onclick="notifyParent()"><span class="t-icon">📲</span><span class="t-name">Mama / Papa rufen</span></button>
+  </div>
+</div>
+
+<!-- CALM ZONE -->
+
+<div id="calm" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <span class="screen-title">🌸 Ruhige Zone</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="calm-grid">
+    <button class="calm-card" onclick="goTo('bubbles')"><span class="c-icon">🫧</span><span class="c-name">Blasen platzen lassen</span></button>
+    <button class="calm-card" onclick="goTo('breathe')"><span class="c-icon">🌬️</span><span class="c-name">Atemübung</span></button>
+    <button class="calm-card" onclick="goTo('sounds')"><span class="c-icon">🎵</span><span class="c-name">Klänge</span></button>
+    <button class="calm-card" onclick="goTo('pressure')"><span class="c-icon">🐾</span><span class="c-name">Tippen &amp; fühlen</span></button>
+    <button class="calm-card" onclick="goTo('darkmode')"><span class="c-icon">🌙</span><span class="c-name">Dunkel &amp; still</span></button>
+    <button class="calm-card" onclick="goTo('universe')"><span class="c-icon">🌌</span><span class="c-name">Universum</span></button>
+  </div>
+</div>
+
+<!-- BREATHE -->
+
+<div id="breathe" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="stopBreathing();goTo('home')">←</button>
+    <span class="screen-title">🌬️ Atmen mit Bär</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="breathe-center">
+    <div class="breathe-circle" id="breatheCircle"><span id="breatheEmoji" style="font-size:64px;">🐻</span></div>
+    <div class="breathe-status" id="breatheStatus">Drück den Bären!</div>
+    <div class="breathe-instruction" id="breatheInstr">Atme zusammen mit Bär.</div>
+    <div class="breathe-count" id="breatheCount"></div>
+    <button class="breathe-start-btn" id="breatheBtn" onclick="startBreathing('normal')">Los geht's! 🐻</button>
+  </div>
+</div>
+
+<!-- SOS BREATHE -->
+
+<div id="sosbreathe" class="screen">
+  <div class="topbar">
+    <button class="back-btn" style="background:rgba(255,255,255,.15);color:white;" onclick="stopBreathing();goTo('sos')">←</button>
+    <span class="screen-title" style="color:#e8d0ff;">Atmen 💜</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="breathe-center">
+    <div class="sos-breathe-circle" id="sosCircle"><span id="sosEmoji" style="font-size:72px;">🐻</span></div>
+    <div class="sos-breathe-text" id="sosStatus">Bär atmet mit dir</div>
+    <div class="sos-breathe-sub" id="sosInstr">Schau auf den Bären.</div>
+    <div class="sos-breathe-count" id="sosCount"></div>
+    <button class="breathe-start-btn" id="sosBtn" onclick="startBreathing('sos')">Zusammen atmen 💜</button>
+  </div>
+</div>
+
+<!-- SOUNDS -->
+
+<div id="sounds" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <span class="screen-title">🎵 Beruhigende Klänge</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="sounds-grid">
+    <button class="sound-card" id="snd-rain" onclick="toggleSound('rain',this)"><span class="sound-icon">🌧️</span><span class="sound-name">Regen</span><div class="sound-bar"><span style="--d:.5s"></span><span style="--d:.7s"></span><span style="--d:.4s"></span><span style="--d:.6s"></span></div></button>
+    <button class="sound-card" id="snd-ocean" onclick="toggleSound('ocean',this)"><span class="sound-icon">🌊</span><span class="sound-name">Wellen</span><div class="sound-bar"><span style="--d:.8s"></span><span style="--d:.6s"></span><span style="--d:.9s"></span><span style="--d:.7s"></span></div></button>
+    <button class="sound-card" id="snd-forest" onclick="toggleSound('forest',this)"><span class="sound-icon">🌲</span><span class="sound-name">Wald</span><div class="sound-bar"><span style="--d:.6s"></span><span style="--d:.4s"></span><span style="--d:.7s"></span><span style="--d:.5s"></span></div></button>
+    <button class="sound-card" id="snd-lullaby" onclick="toggleSound('lullaby',this)"><span class="sound-icon">🎶</span><span class="sound-name">Einschlafmelodie</span><div class="sound-bar"><span style="--d:.5s"></span><span style="--d:.8s"></span><span style="--d:.6s"></span><span style="--d:.4s"></span></div></button>
+    <button class="sound-card" id="snd-white" onclick="toggleSound('white',this)"><span class="sound-icon">💨</span><span class="sound-name">Weißes Rauschen</span><div class="sound-bar"><span style="--d:.3s"></span><span style="--d:.5s"></span><span style="--d:.4s"></span><span style="--d:.6s"></span></div></button>
+    <button class="sound-card" id="snd-fire" onclick="toggleSound('fire',this)"><span class="sound-icon">🔥</span><span class="sound-name">Kaminfeuer</span><div class="sound-bar"><span style="--d:.7s"></span><span style="--d:.5s"></span><span style="--d:.8s"></span><span style="--d:.6s"></span></div></button>
+  </div>
+  <div class="vol-row">
+    <span class="vol-icon">🔈</span>
+    <input type="range" class="vol-slider" min="0" max="100" value="60" oninput="masterVol=this.value/100">
+    <span class="vol-icon">🔊</span>
+  </div>
+</div>
+
+<!-- BUBBLES -->
+
+<div id="bubbles" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('calm')">←</button>
+    <span class="screen-title">🫧 Blasen platzen!</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="bubbles-area" id="bubblesArea"></div>
+  <div class="pop-count" id="popCount">0 Platzer! 🎉</div>
+</div>
+
+<!-- SCHEDULE -->
+
+<div id="schedule" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <span class="screen-title">📅 Mein Tagesplan</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="schedule-list" id="scheduleList"></div>
+  <button class="add-schedule-btn" onclick="showToast('📝 Im Eltern-Bereich kannst du anpassen!')">✏️ Aktivitäten anpassen</button>
+</div>
+
+<!-- PRESSURE -->
+
+<div id="pressure" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('calm')">←</button>
+    <span class="screen-title">🐾 Drücken &amp; fühlen</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="pressure-area">
+    <div class="pressure-title">Drück so oft du möchtest!</div>
+    <div class="pressure-sub">Tippen hilft. Bär drückt auch. 🐻</div>
+    <button class="pressure-btn" id="pressBtn" onclick="pressBear()">🐾</button>
+    <div class="press-count" id="pressCount">0 × gedrückt</div>
+    <div class="press-msg" id="pressMsg"></div>
+    <button class="breathe-start-btn" onclick="resetPress()" style="background:linear-gradient(135deg,#e8dff5,#d0b8f0);color:#5e35b1;margin-top:4px;">Neu starten 🔄</button>
+  </div>
+</div>
+
+<!-- DARK MODE -->
+
+<div id="darkmode" class="screen">
+  <div class="dark-content">
+    <div class="dark-bear">🐻</div>
+    <div class="dark-text">Alles ist ruhig.</div>
+    <div class="dark-sub">Ich bin bei dir. Atme langsam.</div>
+    <button class="dark-exit" onclick="goTo('home')">Zurück 🌟</button>
+  </div>
+</div>
+
+<!-- UNIVERSE -->
+
+<div id="universe" class="screen">
+  <canvas id="universeCanvas"></canvas>
+  <div class="universe-content">
+    <div style="font-size:72px;animation:bearFloat 4s ease-in-out infinite;">🐻</div>
+    <div class="universe-title">Das Universum 🌌</div>
+    <div class="universe-sub">Schau wie die Sterne funkeln...</div>
+    <button class="universe-exit" onclick="goTo('home')">Zurück zur Erde 🌍</button>
+  </div>
+</div>
+
+<!-- PARENT -->
+
+<div id="parent" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('home');lockParent()">←</button>
+    <span class="screen-title">👨‍👩‍👦 Eltern-Bereich</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="parent-lock" id="parentLock">
+    <div class="lock-icon">🔒</div>
+    <div class="lock-title">Eltern-Bereich</div>
+    <div class="lock-sub">PIN eingeben (Standard: 1234)</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key" onclick="pinDel()">⌫</button>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <div></div>
+    </div>
+  </div>
+  <div class="parent-content" id="parentContent">
+    <div class="parent-card">
+      <div class="pc-title">💜 Stimmungs-Tagebuch heute</div>
+      <div class="mood-log" id="moodLog"><div style="color:var(--text-light);font-size:14px;text-align:center;padding:8px 0;">Noch keine Stimmung aufgezeichnet.</div></div>
+    </div>
+    <div class="parent-card">
+      <div class="pc-title">🔔 Letzter SOS-Alarm</div>
+      <div id="lastSOS" style="font-size:14px;color:var(--text-medium);">Noch kein SOS gedrückt heute.</div>
+    </div>
+    <div class="parent-card">
+      <div class="pc-title">📲 Benachrichtigung einrichten</div>
+      <div class="notify-setup">
+        <div class="notify-input-row">
+          <input class="notify-input" id="notifyPhone" type="tel" placeholder="Handynummer (z.B. +4917612345678)">
+          <button class="notify-save-btn" onclick="savePhone()">Speichern</button>
+        </div>
+        <p class="notify-hint">Wenn dein Sohn auf „Mama/Papa rufen" drückt, öffnet sich WhatsApp oder SMS mit einer Nachricht an diese Nummer. Kein Server nötig – direkt vom Gerät.</p>
+        <button class="notify-test-btn" onclick="notifyParent()">🧪 Test-Benachrichtigung senden</button>
+      </div>
+    </div>
+    <div class="parent-card">
+      <div class="pc-title">🌿 Ich brauche jetzt auch Ruhe</div>
+      <button class="calm-btn-parent" onclick="goTo('parentcalm')">💆 Für mich beruhigen</button>
+    </div>
+    <div class="parent-card">
+      <div class="pc-title">💡 Tipps &amp; Wissen</div>
+      <div class="tip-tabs">
+        <button class="tip-tab active" data-cat="meltdown" onclick="switchTips('meltdown')">🌊 Meltdown</button>
+        <button class="tip-tab" data-cat="sensory" onclick="switchTips('sensory')">👂 Reize</button>
+        <button class="tip-tab" data-cat="transition" onclick="switchTips('transition')">🔄 Übergänge</button>
+        <button class="tip-tab" data-cat="aftercare" onclick="switchTips('aftercare')">💜 Danach</button>
+        <button class="tip-tab" data-cat="selfcare" onclick="switchTips('selfcare')">🫁 Für dich</button>
+      </div>
+      <div class="tip-list" id="tipList"></div>
+    </div>
+    <div class="parent-card">
+      <div class="pc-title">⚙️ Einstellungen</div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-label">SOS-Benachrichtigung</span><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="setting-item"><span class="setting-label">Vibration beim Tippen</span><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="setting-item"><span class="setting-label">Dunkel-Modus im SOS</span><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+      </div>
+    </div>
+    <div class="parent-card">
+      <div class="pc-title">📅 Tagesplan anpassen</div>
+      <div id="scheduleEditor"></div>
+      <button class="breathe-parent" onclick="showToast('✅ Tagesplan gespeichert!')">💾 Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- PARENT CALM -->
+
+<div id="parentcalm" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goTo('parent')">←</button>
+    <span class="screen-title">💆 Für dich</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="parentcalm-inner">
+    <div style="font-size:64px;">🐻</div>
+    <div class="parentcalm-title">Du machst das unglaublich gut.</div>
+    <div class="parentcalm-sub">Es ist okay, dass es manchmal schwer ist. Du bist nicht allein. Lass uns kurz durchatmen.</div>
+    <div class="reminder-box">
+      <span>🫁 Einatmen ... 4 Sekunden</span>
+      <span>⏸️ Halten ... 4 Sekunden</span>
+      <span>💨 Ausatmen ... 6 Sekunden</span>
+      <span>💛 Du bist genug. Genau so.</span>
+    </div>
+    <div class="self-tip">
+      <div class="self-tip-title">Erinnerung für dich:</div>
+      Dein Kind braucht keinen perfekten Elternteil – es braucht DICH. Die Tatsache, dass du diese App nutzt, zeigt wie sehr du liebst. Das ist genug. 💚
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ NAVIGATION ═══
+let cur = 'home';
+let universeRAF = null;
+let universeInterval = null;
+
+function goTo(id) {
+  document.getElementById(cur).classList.remove('active');
+  if (cur === 'universe') stopUniverse();
+  if (cur === 'flicker') stopFlicker();
+  cur = id;
+  document.getElementById(id).classList.add('active');
+  if (id === 'bubbles') initBubbles();
+  if (id === 'schedule') renderSchedule();
+  if (id === 'universe') setTimeout(startUniverse, 80);
+  if (id === 'flicker') setTimeout(startFlicker, 50);
+  if (id === 'sosbreathe') startBreathing('sos');
+}
+
+// ═══ MOOD ═══
+const moodLog = [];
+function selectMood(btn, emoji, name) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const t = new Date();
+  const time = t.getHours() + ':' + String(t.getMinutes()).padStart(2,'0');
+  moodLog.unshift({emoji,name,time});
+  showToast(emoji + ' ' + name + ' – gespeichert!');
+  if (navigator.vibrate) navigator.vibrate(40);
+  playMoodSound(btn.dataset.mood);
+}
+
+// ═══ BREATHING ═══
+let breathTimer = null;
+const bPhases = [
+  {label:'Einatmen 🌬️', emoji:'😮', instr:'Langsam einatmen...', count:4, scale:1.35},
+  {label:'Halten ⏸️',   emoji:'😌', instr:'Luft anhalten...',    count:4, scale:1.35},
+  {label:'Ausatmen 💨', emoji:'😊', instr:'Langsam ausatmen...', count:6, scale:1.0},
+];
+let bPhase=0, bCount=0, bMode='normal';
+
+function startBreathing(mode) {
+  bMode = mode;
+  stopBreathing();
+  bPhase=0; bCount=bPhases[0].count;
+  const isS = mode==='sos';
+  document.getElementById(isS?'sosBtn':'breatheBtn').style.display='none';
+  applyBreath();
+  breathTimer = setInterval(()=>{
+    bCount--;
+    if(bCount<=0){ bPhase=(bPhase+1)%3; bCount=bPhases[bPhase].count; }
+    applyBreath();
+  },1000);
+}
+
+function applyBreath() {
+  const p = bPhases[bPhase];
+  const isS = bMode==='sos';
+  const circ = document.getElementById(isS?'sosCircle':'breatheCircle');
+  const emoji = document.getElementById(isS?'sosEmoji':'breatheEmoji');
+  const status = document.getElementById(isS?'sosStatus':'breatheStatus');
+  const instr = document.getElementById(isS?'sosInstr':'breatheInstr');
+  const count = document.getElementById(isS?'sosCount':'breatheCount');
+  if(emoji) emoji.textContent = p.emoji;
+  if(status) status.textContent = p.label;
+  if(instr) instr.textContent = p.instr;
+  if(count) count.textContent = bCount;
+  if(circ) circ.style.transform = 'scale('+p.scale+')';
+}
+
+function stopBreathing() {
+  if(breathTimer){clearInterval(breathTimer);breathTimer=null;}
+  ['breatheCircle','sosCircle'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.transform='scale(1)';
+  });
+  ['breatheBtn','sosBtn'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='';
+  });
+}
+
+// ═══ AUDIO ═══
+let actx = null;
+let masterVol = 0.6;
+const activeSounds = {};
+
+function getCtx() {
+  if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+
+// unlock audio on first touch anywhere
+document.addEventListener('touchstart', ()=>{ getCtx(); }, {once:true, passive:true});
+document.addEventListener('mousedown', ()=>{ getCtx(); }, {once:true});
+
+function playMoodSound(mood) {
+  try {
+    const c = getCtx();
+    if(mood==='happy') {
+      // bright ascending arpeggio
+      [[523,0],[659,0.15],[784,0.30],[1046,0.45]].forEach(([f,t])=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.type='triangle'; o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(0.3,c.currentTime+t+0.05);
+        g.gain.linearRampToValueAtTime(0,c.currentTime+t+0.3);
+        o.connect(g);g.connect(c.destination);o.start(c.currentTime+t);o.stop(c.currentTime+t+0.35);
+      });
+    } else if(mood==='calm') {
+      // soft low hum + fifth
+      [[220,0],[330,0.1]].forEach(([f,t])=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.type='sine'; o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(0.18,c.currentTime+t+0.3);
+        g.gain.linearRampToValueAtTime(0,c.currentTime+t+1.2);
+        o.connect(g);g.connect(c.destination);o.start(c.currentTime+t);o.stop(c.currentTime+t+1.3);
+      });
+    } else if(mood==='tired') {
+      // slow descending tone
+      const o=c.createOscillator(),g=c.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(350,c.currentTime);
+      o.frequency.linearRampToValueAtTime(200,c.currentTime+1.0);
+      g.gain.setValueAtTime(0.2,c.currentTime);
+      g.gain.linearRampToValueAtTime(0,c.currentTime+1.0);
+      o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+1.1);
+    } else if(mood==='worried') {
+      // slightly tense repeated pulse
+      [0,0.2,0.4].forEach(t=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.type='sawtooth'; o.frequency.value=440;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(0.12,c.currentTime+t+0.05);
+        g.gain.linearRampToValueAtTime(0,c.currentTime+t+0.15);
+        o.connect(g);g.connect(c.destination);o.start(c.currentTime+t);o.stop(c.currentTime+t+0.2);
+      });
+    } else if(mood==='overwhelmed') {
+      // short low thud
+      const o=c.createOscillator(),g=c.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(120,c.currentTime);
+      o.frequency.exponentialRampToValueAtTime(60,c.currentTime+0.3);
+      g.gain.setValueAtTime(0.4,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.4);
+      o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+0.45);
+    }
+  } catch(e){}
+}
+
+function makeSound(type) {
+  const ctx = getCtx();
+  const master = ctx.createGain();
+  master.gain.value = masterVol * 0.35;
+  master.connect(ctx.destination);
+
+  if (type==='white') {
+    const buf = ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const src = ctx.createBufferSource();
+    src.buffer=buf; src.loop=true; src.connect(master); src.start();
+    return ()=>{try{src.stop();}catch(e){}master.disconnect();};
+  }
+  if (type==='rain') {
+    const buf = ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const src = ctx.createBufferSource();
+    const filt = ctx.createBiquadFilter();
+    filt.type='bandpass'; filt.frequency.value=2800; filt.Q.value=0.5;
+    src.buffer=buf; src.loop=true; src.connect(filt); filt.connect(master); src.start();
+    return ()=>{try{src.stop();}catch(e){}master.disconnect();};
+  }
+  if (type==='forest') {
+    const buf = ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    const src = ctx.createBufferSource();
+    const filt = ctx.createBiquadFilter();
+    filt.type='lowpass'; filt.frequency.value=900;
+    src.buffer=buf; src.loop=true; src.connect(filt); filt.connect(master); src.start();
+    return ()=>{try{src.stop();}catch(e){}master.disconnect();};
+  }
+  if (type==='fire') {
+    const buf = ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*0.5;
+    const src = ctx.createBufferSource();
+    const filt = ctx.createBiquadFilter();
+    filt.type='lowpass'; filt.frequency.value=400;
+    src.buffer=buf; src.loop=true; src.connect(filt); filt.connect(master); src.start();
+    return ()=>{try{src.stop();}catch(e){}master.disconnect();};
+  }
+  if (type==='ocean') {
+    const osc = ctx.createOscillator();
+    const lfo = ctx.createOscillator();
+    const lfoG = ctx.createGain();
+    osc.type='sawtooth'; osc.frequency.value=90;
+    lfo.type='sine'; lfo.frequency.value=0.12;
+    lfoG.gain.value=50;
+    const filt = ctx.createBiquadFilter();
+    filt.type='lowpass'; filt.frequency.value=250;
+    lfo.connect(lfoG); lfoG.connect(osc.frequency);
+    osc.connect(filt); filt.connect(master);
+    osc.start(); lfo.start();
+    return ()=>{try{osc.stop();lfo.stop();}catch(e){}master.disconnect();};
+  }
+  if (type==='lullaby') {
+    // Gentle pentatonic lullaby — C major pentatonic, slow & soft
+    const melody = [
+      [523,700],[659,700],[784,700],[659,500],[523,900],
+      [392,700],[440,700],[523,900],[392,700],[330,1100],
+      [523,700],[587,700],[659,700],[587,500],[523,900],
+      [440,700],[392,900],[330,700],[261,1300],
+    ];
+    let running = true;
+    let idx = 0;
+    function playNext() {
+      if(!running) return;
+      const [freq, durMs] = melody[idx % melody.length];
+      idx++;
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const g = ctx.createGain();
+      const g2 = ctx.createGain();
+      osc1.type='sine'; osc1.frequency.value=freq;
+      osc2.type='triangle'; osc2.frequency.value=freq;
+      g2.gain.value=0.12;
+      const durS = durMs/1000;
+      g.gain.setValueAtTime(0,ctx.currentTime);
+      g.gain.linearRampToValueAtTime(masterVol*0.28, ctx.currentTime+0.12);
+      g.gain.setValueAtTime(masterVol*0.28, ctx.currentTime+durS-0.3);
+      g.gain.linearRampToValueAtTime(0, ctx.currentTime+durS);
+      osc1.connect(g); osc2.connect(g2); g2.connect(g); g.connect(master);
+      osc1.start(ctx.currentTime); osc1.stop(ctx.currentTime+durS);
+      osc2.start(ctx.currentTime); osc2.stop(ctx.currentTime+durS);
+      setTimeout(playNext, durMs+60);
+    }
+    playNext();
+    return ()=>{ running=false; master.disconnect(); };
+  }
+  return ()=>{ master.disconnect(); };
+}
+
+function toggleSound(type, el) {
+  if(activeSounds[type]) {
+    activeSounds[type]();
+    delete activeSounds[type];
+    el.classList.remove('playing');
+  } else {
+    try {
+      activeSounds[type] = makeSound(type);
+      el.classList.add('playing');
+    } catch(e) { showToast('🔇 ' + e.message); }
+  }
+}
+
+function playSOSSound() {
+  if(activeSounds['lullaby']) { showToast('🎵 Musik läuft schon!'); return; }
+  const el = document.getElementById('snd-lullaby');
+  try {
+    activeSounds['lullaby'] = makeSound('lullaby');
+    if(el) el.classList.add('playing');
+    showToast('🎵 Beruhigungsmelodie spielt...');
+  } catch(e) {}
+}
+
+// ═══ BUBBLES ═══
+let popCount = 0;
+const bColors=[['#fce4ec','#f48fb1'],['#e8dff5','#ce93d8'],['#d4f0e8','#80cbc4'],['#d6eaf8','#90caf9'],['#fef9c3','#fff176'],['#fde8d8','#ffcc80']];
+const bEmojis=['🫧','⭐','💜','🌸','✨','💫','🎈','🍀'];
+
+function initBubbles() {
+  const area = document.getElementById('bubblesArea');
+  area.innerHTML = '';
+  popCount = 0;
+  document.getElementById('popCount').textContent = '0 Platzer! 🎉';
+  for(let i=0;i<16;i++) makeBubble(area);
+  // JS-driven float animation
+  animateBubbles();
+}
+
+const bubbleAnimState = {};
+function makeBubble(area) {
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  const size = 52 + Math.random()*58;
+  const [bg,border] = bColors[Math.floor(Math.random()*bColors.length)];
+  const x = 5 + Math.random()*78;
+  const y = 5 + Math.random()*78;
+  b.style.cssText = `width:${size}px;height:${size}px;left:${x}%;top:${y}%;background:${bg};border:3px solid ${border};`;
+  b.textContent = bEmojis[Math.floor(Math.random()*bEmojis.length)];
+  const id = 'b' + Date.now() + Math.random();
+  b.dataset.bid = id;
+  bubbleAnimState[id] = {offset:Math.random()*Math.PI*2, speed:0.3+Math.random()*0.4, amp:8+Math.random()*12, baseY:y, popping:false};
+
+  b.addEventListener('pointerdown', (e)=>{
+    e.preventDefault();
+    const st = bubbleAnimState[b.dataset.bid];
+    if(!st || st.popping) return;
+    st.popping = true;
+    // vibrate
+    if(navigator.vibrate) navigator.vibrate([15,8,25]);
+    // pop sound
+    try {
+      const c=getCtx();
+      const o=c.createOscillator();
+      const g=c.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(900,c.currentTime);
+      o.frequency.exponentialRampToValueAtTime(180,c.currentTime+0.12);
+      g.gain.setValueAtTime(0.4,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.12);
+      o.connect(g);g.connect(c.destination);
+      o.start();o.stop(c.currentTime+0.12);
+    } catch(e){}
+    // animate pop with JS
+    let frame=0;
+    function popAnim(){
+      frame++;
+      const prog=frame/8;
+      if(prog<0.5){
+        b.style.transform=`scale(${1+prog*0.8})`;
+        b.style.opacity=String(1-prog*0.3);
+      } else {
+        b.style.transform=`scale(${1.4-(prog-0.5)*2.8})`;
+        b.style.opacity=String(0.7-(prog-0.5)*1.4);
+      }
+      if(frame<8){
+        requestAnimationFrame(popAnim);
+      } else {
+        // respawn
+        popCount++;
+        document.getElementById('popCount').textContent = popCount + ' Platzer! 🎉';
+        b.style.transform='scale(1)';
+        b.style.opacity='1';
+        const [nbg,nborder]=bColors[Math.floor(Math.random()*bColors.length)];
+        b.style.background=nbg;
+        b.style.borderColor=nborder;
+        b.textContent=bEmojis[Math.floor(Math.random()*bEmojis.length)];
+        const nx=5+Math.random()*78;
+        const ny=5+Math.random()*78;
+        b.style.left=nx+'%';
+        b.style.top=ny+'%';
+        st.baseY=ny;
+        st.popping=false;
+      }
+    }
+    requestAnimationFrame(popAnim);
+  });
+  area.appendChild(b);
+}
+
+let bubbleRAF=null;
+let bubbleT=0;
+function animateBubbles(){
+  if(bubbleRAF) cancelAnimationFrame(bubbleRAF);
+  function frame(){
+    if(cur!=='bubbles'){bubbleRAF=null;return;}
+    bubbleT+=0.016;
+    document.querySelectorAll('.bubble').forEach(b=>{
+      const st=bubbleAnimState[b.dataset.bid];
+      if(!st||st.popping) return;
+      const dy=Math.sin(bubbleT*st.speed+st.offset)*st.amp;
+      b.style.top=(st.baseY+dy/10)+'%';
+    });
+    bubbleRAF=requestAnimationFrame(frame);
+  }
+  bubbleRAF=requestAnimationFrame(frame);
+}
+
+// ═══ PRESSURE ═══
+let pressCounter=0;
+const pressMsgs=['Super! 🌟','Toll gemacht! ⭐','Weiter so! 💜','Bär drückt zurück! 🐻','Ja! 🎉','Noch mehr! ✨','Du bist stark! 💪','Klasse! 🌈'];
+function pressBear(){
+  pressCounter++;
+  document.getElementById('pressCount').textContent=pressCounter+' × gedrückt';
+  document.getElementById('pressMsg').textContent=pressMsgs[Math.floor(Math.random()*pressMsgs.length)];
+  if(navigator.vibrate) navigator.vibrate([40,10,60]);
+  try{
+    const c=getCtx();
+    const o=c.createOscillator();
+    const g=c.createGain();
+    o.type='sine';o.frequency.value=300;
+    g.gain.setValueAtTime(0.2,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.15);
+    o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+0.15);
+  }catch(e){}
+}
+function resetPress(){ pressCounter=0; document.getElementById('pressCount').textContent='0 × gedrückt'; document.getElementById('pressMsg').textContent=''; }
+
+// ═══ SCHEDULE ═══
+const defaultSchedule=[
+  {icon:'☀️',name:'Aufwachen & anziehen',time:'Morgens',done:false},
+  {icon:'🍳',name:'Frühstück',time:'Morgens',done:false},
+  {icon:'🎒',name:'Schule / Tagesablauf',time:'Vormittags',done:false,current:true},
+  {icon:'🥗',name:'Mittagessen',time:'Mittags',done:false},
+  {icon:'🎮',name:'Lieblingsaktivität',time:'Nachmittags',done:false},
+  {icon:'🛁',name:'Baden / Duschen',time:'Abends',done:false},
+  {icon:'🍽️',name:'Abendessen',time:'Abends',done:false},
+  {icon:'📖',name:'Schlafenszeit-Routine',time:'Nacht',done:false},
+];
+let schedData = JSON.parse(JSON.stringify(defaultSchedule));
+function renderSchedule(){
+  document.getElementById('scheduleList').innerHTML=schedData.map((it,i)=>
+    `<div class="schedule-item ${it.done?'done':''} ${it.current?'current':''}" onclick="toggleSched(${i})">
+      <span class="s-icon">${it.icon}</span>
+      <div class="s-text"><div class="s-name">${it.name}</div><div class="s-time">${it.time}</div></div>
+      <span class="s-check">${it.done?'✅':'⬜'}</span>
+    </div>`).join('');
+  const ed=document.getElementById('scheduleEditor');
+  if(ed) ed.innerHTML=schedData.map((it,i)=>
+    `<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--calm-bg);border-radius:12px;margin-bottom:6px;">
+      <span style="font-size:22px;">${it.icon}</span>
+      <input value="${it.name}" onchange="schedData[${i}].name=this.value" style="flex:1;border:none;background:transparent;font-family:Nunito,sans-serif;font-size:14px;color:var(--text-dark);outline:none;">
+    </div>`).join('');
+}
+function toggleSched(i){
+  schedData[i].done=!schedData[i].done;
+  if(navigator.vibrate) navigator.vibrate(35);
+  renderSchedule();
+  if(schedData[i].done) showToast('✅ '+schedData[i].name+' erledigt!');
+}
+
+// ═══ PIN ═══
+let pinInput='';
+const PIN='1234';
+function pinPress(d){ if(pinInput.length>=4)return; pinInput+=d; updateDots(); if(pinInput.length===4)setTimeout(checkPin,200); }
+function pinDel(){ pinInput=pinInput.slice(0,-1); updateDots(); }
+function updateDots(){ for(let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled',i<pinInput.length); }
+function checkPin(){
+  if(pinInput===PIN){
+    document.getElementById('parentLock').style.display='none';
+    document.getElementById('parentContent').classList.add('unlocked');
+    renderMoodLog(); renderSchedule(); renderTips();
+  } else {
+    showToast('❌ Falscher PIN'); pinInput=''; updateDots();
+  }
+}
+function lockParent(){ pinInput=''; updateDots(); document.getElementById('parentLock').style.display=''; document.getElementById('parentContent').classList.remove('unlocked'); }
+function renderMoodLog(){
+  const el=document.getElementById('moodLog');
+  if(!moodLog.length){el.innerHTML='<div style="color:var(--text-light);font-size:14px;text-align:center;padding:8px 0;">Noch keine Stimmung aufgezeichnet.</div>';return;}
+  el.innerHTML=moodLog.map(m=>`<div class="mood-log-item"><span class="ml-emoji">${m.emoji}</span><span class="ml-text">${m.name}</span><span class="ml-time">${m.time}</span></div>`).join('');
+}
+
+// ═══ NOTIFY ═══
+let savedPhone = '';
+function savePhone(){
+  const v = document.getElementById('notifyPhone').value.trim();
+  if(!v){ showToast('❌ Bitte Nummer eingeben'); return; }
+  savedPhone = v;
+  localStorage.setItem('notifyPhone', v);
+  showToast('✅ Nummer gespeichert!');
+}
+function notifyParent(){
+  const phone = savedPhone || localStorage.getItem('notifyPhone') || '';
+  const msg = encodeURIComponent('🆘 Dein Sohn braucht dich gerade. Er hat SOS in der App gedrückt. Bitte komm zu ihm. 💜');
+  const t = new Date();
+  const time = t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');
+  document.getElementById('lastSOS').textContent = '🆘 SOS gedrückt um '+time+' Uhr';
+  if(navigator.vibrate) navigator.vibrate([100,50,100,50,200]);
+  if(phone){
+    // Try WhatsApp first, fallback to SMS
+    const waUrl = 'https://wa.me/'+phone.replace(/\D/g,'')+('?text='+msg);
+    window.open(waUrl,'_blank');
+    showToast('📲 WhatsApp wird geöffnet...');
+  } else {
+    showToast('⚠️ Bitte zuerst Nummer im Eltern-Bereich eintragen!');
+  }
+}
+
+// ═══ TIPS ═══
+const allTips = {
+  meltdown:[
+    {t:'🌊 Im Meltdown – sofort',b:'Sprache auf ein Minimum reduzieren. Ruhige Körpersprache, keine hastigen Bewegungen. Körpernähe nur wenn er sie signalisiert. Nicht verhandeln – einfach da sein.'},
+    {t:'🤫 Was du NICHT tun solltest',b:'Kein „Beruhig dich!", keine Erklärungen, kein Anfassen ohne Erlaubnis. Kein Blickkontakt erzwingen. Andere aus der Situation führen.'},
+    {t:'⏱️ Wie lange dauert es?',b:'Ein Meltdown dauert oft 20–40 Minuten bis zur vollen Erholung. Plane Ruhezeit danach ein. Versuche nicht direkt danach zu reden.'},
+    {t:'🛡️ Sicherheit zuerst',b:'Gefährliche Gegenstände aus der Reichweite räumen. Ruhige, reizarme Umgebung herstellen – Licht dimmen, Lärm reduzieren.'},
+  ],
+  sensory:[
+    {t:'💡 Licht & Sehen',b:'Warmes, gedämmtes Licht hilft. Sonnenbrillen oder Kapuzen können draußen helfen. Bildschirme nachts auf Nachtmodus stellen.'},
+    {t:'👂 Klänge & Hören',b:'Geräuschschutzkopfhörer für laute Orte. Supermarkt zu ruhigen Zeiten. Vorher ankündigen: „Es wird laut werden."'},
+    {t:'👕 Kleidung & Textur',b:'Tags entfernen. Nahtlose Socken. Weiche, dehnbare Stoffe. Schichten anziehen damit er selbst regulieren kann.'},
+    {t:'🍽️ Essen & Geruch',b:'Starke Gerüche beim Kochen können überreizen. Essenspräferenzen ernst nehmen. Neue Lebensmittel ohne Druck einführen.'},
+  ],
+  transition:[
+    {t:'⏰ Der 5-Minuten-Timer',b:'Immer 5–10 Minuten vorher ankündigen. Visuelle Timer helfen weil sie abstrakte Zeit sichtbar machen.'},
+    {t:'📋 Tagesplan & Routine',b:'Routinen sind emotionale Sicherheitsnetze. Änderungen immer mit Vorwarnung und Erklärung.'},
+    {t:'🆕 Unbekannte Situationen',b:'Vor neuen Orten: Fotos zeigen, beschreiben wie es aussieht und klingt. „Wir kommen zur Arztpraxis – das Wartezimmer sieht so aus..."'},
+    {t:'🔄 Nach der Schule',b:'Er hat den ganzen Tag „funktioniert". Ruhige Übergangszeit ohne Anforderungen einplanen. Lieblingsaktivität als Puffer.'},
+  ],
+  aftercare:[
+    {t:'💜 Direkt nach dem Meltdown',b:'Kein Vorwurf, keine Analyse. Ruhige Gegenwart anbieten. Wasser anbieten. Lieblingsdecke oder Kuscheltier.'},
+    {t:'🐻 Körperliche Erholung',b:'Nach einem Meltdown ist der Körper erschöpft wie nach Sport. Schlaf oder Ruheliegen ist normal.'},
+    {t:'📖 Später besprechen',b:'Wenn er sich erholt hat: kurz und einfach besprechen was schwer war. Keine Schuld – Verstehen was hilft.'},
+    {t:'❤️ Verbindung stärken',b:'Gemeinsame ruhige Zeit stärkt die Bindung. Körperkontakt wenn er ihn möchte. „Ich liebe dich" – immer.'},
+  ],
+  selfcare:[
+    {t:'🫁 Für dich atmen',b:'Wenn du merkst dass du angespannt bist: 4 Sekunden ein, 4 halten, 6 aus. Dein Kind spürt deine Nervosität – deine Ruhe ist das mächtigste Werkzeug.'},
+    {t:'💬 Mit wem reden?',b:'Autism-Eltern-Gruppen (online & offline) verstehen wie es wirklich ist. Autismus Deutschland, lokale Selbsthilfegruppen.'},
+    {t:'🛌 Schlaf & Pausen',b:'Du kannst nicht aus einem leeren Tank geben. Wenn möglich: Abwechslung mit Partner, Familie, Entlastungsdiensten.'},
+    {t:'💛 Du bist genug',b:'Es gibt keinen perfekten Autism-Elternteil. Du versuchst es jeden Tag – das sieht dein Kind. Das prägt es ein Leben lang.'},
+  ],
+};
+let curTipCat='meltdown';
+function renderTips(){
+  const list=document.getElementById('tipList');
+  if(!list) return;
+  list.innerHTML=allTips[curTipCat].map(t=>`<div class="tip-item ${curTipCat}"><b>${t.t}</b>${t.b}</div>`).join('');
+}
+function switchTips(cat){
+  curTipCat=cat;
+  document.querySelectorAll('.tip-tab').forEach(t=>t.classList.toggle('active',t.dataset.cat===cat));
+  renderTips();
+}
+
+// ═══ UNIVERSE ═══
+function startUniverse(){
+  const canvas = document.getElementById('universeCanvas');
+  if(!canvas) return;
+  // Size canvas to actual screen
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // stars
+  const stars=[];
+  for(let i=0;i<300;i++){
+    stars.push({
+      x:Math.random()*W, y:Math.random()*H,
+      r:Math.random()*2.2+0.3,
+      phase:Math.random()*Math.PI*2,
+      speed:0.008+Math.random()*0.025,
+      col:['#ffffff','#ffe8a0','#a0c8ff','#ffc8ff','#c8ffc8'][Math.floor(Math.random()*5)],
+    });
+  }
+
+  // nebulas
+  const nebulas=[
+    {x:W*.2,y:H*.25,r:W*.22,col:'rgba(100,40,200,0.10)'},
+    {x:W*.8,y:H*.6, r:W*.18,col:'rgba(40,80,200,0.08)'},
+    {x:W*.5,y:H*.8, r:W*.15,col:'rgba(200,40,100,0.07)'},
+  ];
+
+  let t=0;
+  function draw(){
+    t+=0.012;
+    ctx.fillStyle='#000008';
+    ctx.fillRect(0,0,W,H);
+
+    // nebulas
+    nebulas.forEach(n=>{
+      const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
+      g.addColorStop(0,n.col);
+      g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;
+      ctx.fillRect(0,0,W,H);
+    });
+
+    // stars
+    stars.forEach(s=>{
+      s.phase+=s.speed;
+      const alpha=Math.max(0.05,0.35+Math.sin(s.phase)*0.55);
+      const sc=0.6+Math.sin(s.phase*0.8)*0.5;
+      ctx.save();
+      ctx.globalAlpha=alpha;
+      ctx.fillStyle=s.col;
+      ctx.shadowBlur=s.r>1.4?12:4;
+      ctx.shadowColor=s.col;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r*Math.max(0.1,sc),0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    universeRAF=requestAnimationFrame(draw);
+  }
+  draw();
+
+  // shooting stars
+  function shoot(){
+    if(cur!=='universe') return;
+    const s=document.createElement('div');
+    const len=70+Math.random()*120;
+    const angle=25+Math.random()*20;
+    s.style.cssText=`position:absolute;height:2px;width:${len}px;background:linear-gradient(90deg,white,transparent);border-radius:2px;top:${Math.random()*55}%;left:${Math.random()*65}%;transform:rotate(${angle}deg);z-index:1;animation:shoot ${0.5+Math.random()*.5}s linear forwards;pointer-events:none;`;
+    document.getElementById('universe').appendChild(s);
+    setTimeout(()=>s.remove(),1200);
+  }
+  // inject keyframe for shooting stars
+  if(!document.getElementById('shootKF')){
+    const st=document.createElement('style');
+    st.id='shootKF';
+    st.textContent='@keyframes shoot{from{opacity:1;transform-origin:left center;transform:rotate(var(--a,30deg)) scaleX(1)}to{opacity:0;transform-origin:left center;transform:rotate(var(--a,30deg)) scaleX(0) translateX(200px)}}';
+    document.head.appendChild(st);
+  }
+  universeInterval=setInterval(shoot,1600+Math.random()*1000);
+  setTimeout(shoot,300);
+}
+
+function stopUniverse(){
+  if(universeRAF){cancelAnimationFrame(universeRAF);universeRAF=null;}
+  if(universeInterval){clearInterval(universeInterval);universeInterval=null;}
+}
+
+// ═══ SOS STARS (background stars on SOS screen) ═══
+function initSOSStars(){
+  const bg=document.getElementById('starsBg');
+  if(!bg) return;
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*3}s;--delay:-${Math.random()*3}s;`;
+    bg.appendChild(s);
+  }
+}
+
+// ═══ TOAST ═══
+let toastTm;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTm);
+  toastTm=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ═══ FLICKER ═══
+const flickerColors=[
+  '#ff4d6d','#ff9f43','#ffd700','#a8ff3e','#00d2ff',
+  '#7b2fff','#ff6ec7','#00ffcc','#ff4500','#4fc3f7',
+  '#e040fb','#69f0ae','#ffab40','#40c4ff','#f06292',
+];
+let flickerRAF=null;
+let flickerInterval=null;
+let flickerSpeed=600;
+
+function startFlicker(){
+  const el=document.getElementById('flicker');
+  if(!el) return;
+  let ci=0;
+  function next(){
+    ci=(ci+1)%flickerColors.length;
+    el.style.background=flickerColors[ci];
+    if(navigator.vibrate) navigator.vibrate(20);
+  }
+  next();
+  flickerInterval=setInterval(next, flickerSpeed);
+}
+
+function stopFlicker(){
+  if(flickerInterval){clearInterval(flickerInterval);flickerInterval=null;}
+  const el=document.getElementById('flicker');
+  if(el) el.style.background='';
+}
+
+function setFlickerSpeed(s){
+  document.querySelectorAll('.flicker-speed-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fspeed-'+s).classList.add('active');
+  flickerSpeed = s==='slow'?800 : s==='mid'?400 : 180;
+  stopFlicker();
+  startFlicker();
+}
+
+// ═══ INIT ═══
+initSOSStars();
+renderSchedule();
+// Load saved phone
+const sp=localStorage.getItem('notifyPhone');
+if(sp){ savedPhone=sp; const el=document.getElementById('notifyPhone'); if(el) el.value=sp; }
+</script>
+
 </body>
 </html>
